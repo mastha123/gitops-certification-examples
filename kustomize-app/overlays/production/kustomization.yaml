@@ -1,3 +1,4 @@
+namespace: default-prd
 namePrefix: production-
 commonLabels:
   variant: production
