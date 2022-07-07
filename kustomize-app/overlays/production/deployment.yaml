@@ -1,9 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  namespace: my-app-prd
-metadata:
+  metadata:
   name: the-deployment
+  namespace: my-app-prd
 spec:
   replicas: 5
   ports:
