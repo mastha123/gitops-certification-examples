@@ -4,3 +4,5 @@ metadata:
   name: the-deployment
 spec:
   replicas: 5
+  ports:
+  - nodePort: 31001
