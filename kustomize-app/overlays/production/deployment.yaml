@@ -1,8 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-  metadata:
+metadata:
   name: the-deployment
 spec:
-  replicas: 5
-  ports:
-  - nodePort: 31001
+  replicas: 3
