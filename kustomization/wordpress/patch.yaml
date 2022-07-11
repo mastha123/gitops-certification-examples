@@ -10,11 +10,13 @@ spec:
         image: debian
         command: ["/bin/sh"]
         args: ["-c", "echo", "WORDPRESS_SERVICE", ";", "echo", "MYSQL_SERVICE"]
+        #args: ["-c", "echo $(WORDPRESS_SERVICE); echo $(MYSQL_SERVICE)"]
       containers:
       - name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
           value: MYSQL_SERVICE
+          #value: $(MYSQL_SERVICE)
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:

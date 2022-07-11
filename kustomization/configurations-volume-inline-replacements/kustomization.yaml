@@ -1,0 +1,31 @@
+#https://github.com/keleustes/kustomize/tree/allinone/examples/issues/issue_1540_b
+resources:
+- deployment.yaml
+- values.yaml
+
+# vars:
+# - name: Values.my-values.spec.someip
+#   objref:
+#     apiVersion: kustomize.config.k8s.io/v1
+#     kind: Values
+#     name: my-values
+#   fieldref:
+#     fieldpath: spec.someip
+
+replacements:
+  - source: 
+      name: my-values
+      kind: Values
+      version: v1
+      fieldPath: spec.someip
+    targets:
+    - select: 
+        kind: Deployment
+        name: nfs-client-provisioner
+      fieldPaths:
+      - spec.template.spec.volumes.[name=nfs-client-root].nfs.server
+      - spec.template.spec.containers.[name=nfs-client-provisioner].env.[name=NFS_SERVER].value
+
+# configurations:
+# - kustomizeconfig/varReference.yaml
+

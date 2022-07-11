@@ -1,0 +1,9 @@
+#https://github.com/keleustes/kustomize/tree/allinone/examples/issues/issue_1540_b
+resources:
+- deployment.yaml
+- values.yaml
+
+replacements:
+- path: kustomizeconfig/replacements.yaml
+
+

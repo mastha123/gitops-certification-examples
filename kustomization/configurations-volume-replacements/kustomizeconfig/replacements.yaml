@@ -1,0 +1,12 @@
+source: 
+  name: my-values
+  kind: Values
+  version: v1
+  fieldPath: spec.someip
+targets:
+- select: 
+    kind: Deployment
+    name: nfs-client-provisioner
+  fieldPaths:
+  - spec.template.spec.volumes.[name=nfs-client-root].nfs.server
+  - spec.template.spec.containers.[name=nfs-client-provisioner].env.[name=NFS_SERVER].value
