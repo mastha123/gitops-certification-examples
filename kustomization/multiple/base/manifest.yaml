@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  common: Common Variable
+kind: ConfigMap
+metadata:
+  name: config-mdd5k4b6c5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app: nginx
+  name: the-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - image: nginx:1.8.0
+        name: nginxapp

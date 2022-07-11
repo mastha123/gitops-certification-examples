@@ -1,0 +1,40 @@
+apiVersion: v1
+data:
+  common: Common Variable
+kind: ConfigMap
+metadata:
+  name: config-mdd5k4b6c5
+---
+apiVersion: v1
+data:
+  common.properties: FOO=none
+  custom.properties: FOO=BAR
+kind: ConfigMap
+metadata:
+  name: file-config-7k52dk48g9
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app: nginx
+  name: the-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - env:
+        - name: COMMON
+          valueFrom:
+            configMapKeyRef:
+              key: common
+              name: config-mdd5k4b6c5
+        image: nginx:1.8.0
+        name: nginxapp
+        volumeMounts:
+        - mountPath: /etc/config
+          name: config-volume
+      volumes:
+      - configMap:
+          name: file-config-7k52dk48g9
+        name: config-volume

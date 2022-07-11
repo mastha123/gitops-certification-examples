@@ -1,0 +1,77 @@
+apiVersion: v1
+data:
+  altGreeting: Good Morning!
+  enableRisky: "false"
+kind: ConfigMap
+metadata:
+  labels:
+    app: hello
+  name: the-map-8hkcg74h7c
+---
+apiVersion: v1
+data:
+  docker-email: RE9DS0VSX0VNQUlM
+  docker-password: RE9DS0VSX1BBU1NXT1JE
+  docker-server: RE9DS0VSX1JFR0lTVFJZX1NFUlZFUg==
+  docker-username: RE9DS0VSX1VTRVI=
+kind: Secret
+metadata:
+  labels:
+    app: hello
+  name: myregistrykey-4gtg2g994g
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hello
+  name: the-service
+spec:
+  ports:
+  - port: 8666
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: hello
+    deployment: hello
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello
+  name: the-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello
+      deployment: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+        deployment: hello
+    spec:
+      containers:
+      - command:
+        - /hello
+        - --port=8080
+        - --enableRiskyFeature=$(ENABLE_RISKY)
+        env:
+        - name: ALT_GREETING
+          valueFrom:
+            configMapKeyRef:
+              key: altGreeting
+              name: the-map-8hkcg74h7c
+        - name: ENABLE_RISKY
+          valueFrom:
+            configMapKeyRef:
+              key: enableRisky
+              name: the-map-8hkcg74h7c
+        image: monopole/hello:1
+        name: the-container
+        ports:
+        - containerPort: 8080

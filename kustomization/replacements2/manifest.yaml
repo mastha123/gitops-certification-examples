@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - env:
+    - name: SECRET_TOKEN
+      value: my-secret
+    image: myimage
+    name: hello

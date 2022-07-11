@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello
+spec:
+  template:
+    spec:
+      containers:
+      - env:
+        - name: SECRET_TOKEN
+          value: my-secret # this value is copied from my-secret
+        image: myimage
+        name: hello
+      restartPolicy: OnFailure # this value is copied from my-pod
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - image: busybox
+    name: myapp-container
+  restartPolicy: OnFailure

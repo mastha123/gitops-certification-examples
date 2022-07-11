@@ -1,0 +1,14 @@
+- op: add
+  path: /metadata/annotations/app.io~1owner
+  value: "me"
+- op: add
+  path: /spec/template/spec/serviceAccountName
+  value: app
+- op: add
+  path: /spec/template/spec/containers/1/env/-
+  value:
+      name: CUSTOM
+      valueFrom:
+        configMapKeyRef:
+          name: config
+          key: custom

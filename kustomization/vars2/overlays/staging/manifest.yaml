@@ -1,0 +1,40 @@
+apiVersion: v1
+data:
+  HOST_A: a-staging.example.org
+  HOST_B: b-staging.example.org
+  HOST_C: c-staging.example.org
+  SERVICES_GLOBAL_STATIC_IP_NAME: services-staging
+  SERVICES_PRE_SHARED_CERT: a-staging-yyyymmdd,b-staging-yyyymmdd,c-staging-yyyymmdd
+kind: ConfigMap
+metadata:
+  name: ops-ingress-properties-fthfdhm5f8
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.gcp.kubernetes.io/pre-shared-cert: a-staging-yyyymmdd,b-staging-yyyymmdd,c-staging-yyyymmdd
+    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: services-staging
+  name: services
+spec:
+  rules:
+  - host: a-staging.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: serviceA
+          servicePort: 80
+  - host: b-staging.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: serviceB
+          servicePort: 80
+  - host: c-staging.example.org
+    http:
+      paths:
+      - backend:
+          serviceName: serviceC
+          servicePort: 80

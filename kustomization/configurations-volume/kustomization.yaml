@@ -1,0 +1,17 @@
+#https://github.com/keleustes/kustomize/tree/allinone/examples/issues/issue_1540_b
+resources:
+- deployment.yaml
+- values.yaml
+
+vars:
+- name: Values.my-values.spec.someip
+  objref:
+    apiVersion: kustomize.config.k8s.io/v1
+    kind: Values
+    name: my-values
+  fieldref:
+    fieldpath: spec.someip
+
+configurations:
+- kustomizeconfig/varReference.yaml
+

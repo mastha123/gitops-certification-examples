@@ -1,0 +1,29 @@
+resources:
+- wordpress
+- mysql
+patchesStrategicMerge:
+- patch.yaml
+namePrefix: demo-
+
+replacements:
+- source: 
+    name: demo-wordpress
+    kind: Service
+    version: v1
+  targets:
+  - select: 
+      kind: Deployment
+      name: demo-wordpress
+    fieldPaths:
+    - spec.template.spec.initContainers.[name=init-command].args.2
+- source: 
+    name: demo-mysql
+    kind: Service
+    version: v1
+  targets:
+  - select: 
+      kind: Deployment
+      name: demo-wordpress
+    fieldPaths:
+    - spec.template.spec.initContainers.[name=init-command].args.5
+    - spec.template.spec.containers.[name=wordpress].env.[name=WORDPRESS_DB_HOST].value

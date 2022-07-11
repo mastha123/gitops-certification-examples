@@ -1,0 +1,52 @@
+apiVersion: v1
+data:
+  common: Common Variable
+  custom: My Custom Config
+kind: ConfigMap
+metadata:
+  name: config-k96cb96f75
+---
+apiVersion: v1
+data:
+  common.properties: FOO=none
+kind: ConfigMap
+metadata:
+  name: file-config-h75m45kg66
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app: nginx
+    app.io/owner: me
+  name: the-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - proxy
+        - sidecar
+        image: docker.io/istio/proxyv2
+        name: istio-proxy
+      - env:
+        - name: COMMON
+          valueFrom:
+            configMapKeyRef:
+              key: common
+              name: config-k96cb96f75
+        - name: CUSTOM
+          valueFrom:
+            configMapKeyRef:
+              key: custom
+              name: config-k96cb96f75
+        image: nginx:1.8.0
+        name: nginxapp
+        volumeMounts:
+        - mountPath: /etc/config
+          name: config-volume
+      serviceAccountName: app
+      volumes:
+      - configMap:
+          name: file-config-h75m45kg66
+        name: config-volume
