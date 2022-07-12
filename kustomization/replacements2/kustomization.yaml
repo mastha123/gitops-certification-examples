@@ -17,6 +17,7 @@ replacements:
     kind: Secret
     name: my-secret
     version: v1
+    fieldPath: data.username
   targets:
   - select: 
       kind: Pod

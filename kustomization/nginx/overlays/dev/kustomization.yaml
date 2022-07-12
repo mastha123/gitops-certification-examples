@@ -1,0 +1,45 @@
+bases:
+  - ../../base/
+
+namespace: dev-nginx
+namePrefix: dev-
+commonLabels:
+  variant: dev
+
+patchesStrategicMerge:
+- deployment.yaml
+
+configMapGenerator:
+- name: app-properties-file
+  files:
+    - application-properties
+  #behavior: replace
+
+secretGenerator:
+  - name: app-secrets-file
+    files:
+      - application-secrets
+
+replacements:
+- source: 
+    name: app-properties-file
+    kind: ConfigMap
+    version: v1
+    fieldPath: data.application-properties
+  targets:
+  - select: 
+      kind: Deployment
+      name: nginx-deployment
+    fieldPaths:
+    - spec.template.spec.containers.[name=nginx].env.[name=MY_VAR_1].value #MY_VAR_1=VAR1=value1
+- source: 
+    name: app-secrets-file
+    kind: Secret
+    version: v1
+    fieldPath: data.application-secrets
+  targets:
+  - select: 
+      kind: Deployment
+      name: nginx-deployment
+    fieldPaths:
+    - spec.template.spec.containers.[name=nginx].env.[name=MY_SECRET_1].value #password=admin

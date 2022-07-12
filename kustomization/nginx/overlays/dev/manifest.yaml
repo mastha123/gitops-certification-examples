@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    variant: dev
+  name: dev-nginx
+---
+apiVersion: v1
+data:
+  application-properties: |-
+    VAR1=value1
+    VAR2=value2
+    FOO=bar
+kind: ConfigMap
+metadata:
+  labels:
+    variant: dev
+  name: dev-app-properties-file-262ch8hgg4
+  namespace: dev-nginx
+---
+apiVersion: v1
+data:
+  application-secrets: cGFzc3dvcmQ9YWRtaW4=
+kind: Secret
+metadata:
+  labels:
+    variant: dev
+  name: dev-app-secrets-file-chgkh2hh2f
+  namespace: dev-nginx
+type: Opaque
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    variant: dev
+  name: dev-nginx-deployment
+  namespace: dev-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+      variant: dev
+  template:
+    metadata:
+      labels:
+        app: nginx
+        variant: dev
+    spec:
+      containers:
+      - env:
+        - name: MY_VAR_1
+          value: |-
+            VAR1=value1
+            VAR2=value2
+            FOO=bar
+        - name: MY_SECRET_1
+          value: cGFzc3dvcmQ9YWRtaW4=
+        image: nginx:1.14.2
+        name: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /config
+          name: config
+      volumes:
+      - configMap:
+          name: dev-app-properties-file-262ch8hgg4
+        name: config
