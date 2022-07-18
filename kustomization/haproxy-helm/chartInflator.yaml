@@ -1,0 +1,17 @@
+# chartInflator.yaml
+
+apiVersion: builtin
+kind: HelmChartInflationGenerator
+metadata:
+  # The name here doesn't matter.
+  name: notImportantHere
+# The name of the chart to use
+chartName: haproxy-ingress
+# The name of the release
+releaseName: hydra
+# Path to a values.yaml
+values: values.yaml
+# Namespace to deploy to
+releaseNamespace: ingress-controller
+# URL to the Repo
+chartRepoUrl:  https://haproxy-ingress.github.io/charts

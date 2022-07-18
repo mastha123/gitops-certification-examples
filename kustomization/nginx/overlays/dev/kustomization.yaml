@@ -26,6 +26,9 @@ replacements:
     kind: ConfigMap
     version: v1
     fieldPath: data.application-properties
+    options:
+      delimiter: '='
+      index: 2
   targets:
   - select: 
       kind: Deployment

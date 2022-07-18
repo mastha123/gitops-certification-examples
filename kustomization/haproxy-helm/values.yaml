@@ -1,0 +1,30 @@
+# values.yaml
+controller:
+  ## Annotations to be added to controller pods
+  ##
+  podAnnotations:
+    config.linkerd.io/skip-inbound-ports: 80, 443
+  extraArgs:
+    watch-ingress-without-class:
+  # ConfigMap to configure haproxy ingress
+  config:
+    proxy-protocol: "no"
+    use-proxy-protocol: "True"
+    config-frontend: |
+      capture request header Host len 32
+      capture request header X-REAL-IP len 64
+      capture request header User-Agent len 200
+  service:
+    loadBalancerIP: "10.0.7.20"
+
+  stats:
+    enabled: true
+
+  metrics:
+    enabled: true
+
+  logs:
+    enabled: true
+
+defaultBackend:
+  enabled: true

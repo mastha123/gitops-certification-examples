@@ -1,0 +1,5 @@
+# kustomization.yaml
+
+# Tell kustomize to use the generator in chartInflator.yaml
+generators:
+- chartInflator.yaml

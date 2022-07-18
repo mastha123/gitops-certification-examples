@@ -52,8 +52,9 @@ spec:
       - env:
         - name: MY_VAR_1
           value: |-
-            value2
-            FOO
+            VAR1=value1
+            VAR2=value2
+            FOO=bar
         - name: MY_SECRET_1
           value: cGFzc3dvcmQ9YWRtaW4=
         image: nginx:1.14.2
